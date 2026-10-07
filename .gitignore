@@ -1,0 +1,27 @@
+# Secrets
+.env
+.env.*
+
+# Market & training data (download with scripts/fetch_binance_vision.py)
+*.parquet
+data/**/*.zip
+data/raw/
+data/ohlcv/
+data_ext/
+data_daily/
+data_kraken/
+
+# Runtime state, logs, caches
+*.db
+*.db-shm
+*.db-wal
+*.log
+__pycache__/
+.pytest_cache/
+.venv/
+
+# Generated research output (each run writes results/<run_id>/ with a manifest)
+results/
+
+# Live paper-trading bundle (written by scripts/export_live_bundle.py)
+models/

@@ -1,0 +1,39 @@
+[project]
+name = "trading-ai"
+version = "0.2.0"
+description = "Pre-registered crypto strategy research with a look-ahead-free backtester and paper-trading stack"
+keywords = ["quantitative-finance", "backtesting", "crypto", "statistical-arbitrage", "funding-rate", "walk-forward", "deflated-sharpe-ratio", "pre-registration"]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    # data + exchange
+    "ccxt>=4.5.42",
+    "aiohttp>=3.9",
+    "polars>=1.38.1",
+    "pyarrow>=23.0.1",
+    "numpy>=1.26",
+    "pandas>=2.2",
+    # research
+    "scipy>=1.12",
+    "scikit-learn>=1.8.0",
+    "statsmodels>=0.14.6",
+    "xgboost>=3.2.0",
+    "matplotlib>=3.10.8",
+    # live / paper trading
+    "pyzmq>=26.0",
+    "fastapi>=0.110",
+    "uvicorn>=0.29",
+    "textual>=0.80",
+    "rich>=13.7",
+]
+
+[project.optional-dependencies]
+# SHAP feature selection for the XGBoost strategy (pulls in numba/llvmlite)
+shap = ["shap>=0.46"]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
