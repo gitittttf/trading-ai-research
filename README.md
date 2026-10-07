@@ -1,5 +1,7 @@
 # trading_ai: pre-registered crypto strategy research with a look-ahead-free backtester
 
+[![tests](https://github.com/gitittttf/trading-ai-research/actions/workflows/tests.yml/badge.svg)](https://github.com/gitittttf/trading-ai-research/actions/workflows/tests.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 This is a research and paper-trading stack for systematic crypto strategies. It began as stat-arb on Binance USDⓈ-M perpetuals and later expanded to Kraken. **17 strategy variants were pre-registered and tested against fixed go criteria. None passed, so no real money was used.** The best candidate is a delta-neutral funding harvest. On Binance data it does no better than 3-month T-bills in normal years. On the venue an EU resident may legally use (Kraken Derivatives EU), it loses money after costs. Every result, failures included, is recorded in [`docs/EVALUATION_PROTOCOL.md`](docs/EVALUATION_PROTOCOL.md).
 
 > Research only. Not investment advice. Paper trading only: nothing here routes orders to an exchange.
@@ -177,3 +179,7 @@ uv run python live_trading/dashboard_tui.py
 This repository is for research and education only. It is not investment advice and does not recommend trading any instrument. All trading here is simulated, in backtests and paper trading, and the code places no orders on any exchange. Crypto derivatives are high-risk, and whether you can use them, and how they are taxed, depends on where you live.
 
 Built with AI coding assistance (Claude Code).
+
+## License
+
+MIT, see [LICENSE](LICENSE).

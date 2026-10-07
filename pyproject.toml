@@ -2,6 +2,8 @@
 name = "trading-ai"
 version = "0.2.0"
 description = "Pre-registered crypto strategy research with a look-ahead-free backtester and paper-trading stack"
+license = "MIT"
+license-files = ["LICENSE"]
 keywords = ["quantitative-finance", "backtesting", "crypto", "statistical-arbitrage", "funding-rate", "walk-forward", "deflated-sharpe-ratio", "pre-registration"]
 readme = "README.md"
 requires-python = ">=3.12"
