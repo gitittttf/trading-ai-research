@@ -100,7 +100,7 @@ Unless stated otherwise, each period ends at the start of the holdout, 2026-07-0
 
 Variant 12, the paper candidate, was registered for a forward test before any forward data was evaluated. `scripts/paper_forward.py` computes it day by day from 2026-10-01, using only data published after the research data ends and the same code as the backtest. Variants 9 and 14 run alongside for observation only. Results are committed to [`paper/`](paper/).
 
-The test will be evaluated after at least 90 forward days, with positions held on at least 30 of them. It passes if the net return is > 0 and the maximum drawdown is ≤ 5 %. It is still far too early to draw conclusions. Variant 12 runs on Binance data, which the owner cannot trade from the EU, so even a passed forward test only confirms the idea and is not a route to real money.
+The test will be evaluated after at least 90 forward days, with positions held on at least 30 of them. It passes if the net return is > 0 and the maximum drawdown is ≤ 5 %. The current state (data cutoff, forward days, net return and drawdown per strategy) is always in [`paper/summary.json`](paper/summary.json), the day-by-day ledger in `paper/forward_<strategy>.csv`. Each run recomputes the whole period from 2026-10-01, so a later run replaces reconstructed funding with the official archive. Binance's archives skip 2026-10-28 for every symbol; the script carries the previous close across such market-wide gaps instead of treating them as a mass delisting (listed as `archive_gap_days_filled`). Variant 12 runs on Binance data, which the owner cannot trade from the EU, so even a passed forward test only confirms the idea and is not a route to real money.
 
 ## Repository structure
 

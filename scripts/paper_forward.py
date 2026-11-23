@@ -147,6 +147,26 @@ def reconstruct(sym: str, days: list[dt.date], interval: int) -> tuple[np.ndarra
     return np.concatenate(ts), np.concatenate(rs), unknown
 
 
+def fill_market_gaps(panel, min_coins: int = 20, share: float = 0.5, first_col: int = 0) -> list[str]:
+    """Archive gaps: a day missing for most coins at once (e.g. 2026-10-28 is absent from every
+    Binance archive, even the 1-minute klines) is not a mass delisting. For coins that traded the
+    day before and after, carry the previous close forward (the move across the gap is booked on
+    the next day, nothing is lost) and use the neighbours' average volume. Edits ``panel`` in place
+    and returns the filled days."""
+    c = panel.close[:, first_col:]                 # views: edits reach the panel
+    q = None if panel.quote_volume is None else panel.quote_volume[:, first_col:]
+    filled = []
+    for d in range(1, len(panel.days) - 1):
+        around = np.isfinite(c[d - 1]) & np.isfinite(c[d + 1])
+        miss = around & ~np.isfinite(c[d])
+        if around.sum() >= min_coins and miss.sum() >= share * around.sum():
+            c[d, miss] = c[d - 1, miss]
+            if q is not None:
+                q[d, miss] = 0.5 * (q[d - 1, miss] + q[d + 1, miss])
+            filled.append(dt.datetime.fromtimestamp(panel.days[d] / 1000, dt.UTC).date().isoformat())
+    return filled
+
+
 def perp_symbols() -> list[str]:
     syms = set()
     for prefix in ("data/futures/um/monthly/klines/", "data/futures/um/daily/klines/"):
@@ -225,6 +245,9 @@ def main():
     log(f"{len(spot)} spot pairs loaded ({time.time() - t0:.0f}s)")
 
     panel = build_panel_from_daily(perp, funding, start_ms, end_ms)
+    gaps = fill_market_gaps(panel)
+    if gaps:
+        log(f"archive gap days filled with the previous close: {gaps}")
     T, N = panel.close.shape
     lo = int(np.searchsorted(panel.days, ms(FORWARD_START))) - 1      # decision at the last research close
     costs = CostModel()
@@ -240,6 +263,7 @@ def main():
         return w2, reb2
 
     wide, m = add_spot_columns(panel, spot)
+    fill_market_gaps(wide, min_coins=10, first_col=N)     # spot columns
     w12, reb12, eps = harvest_weights(wide, m, n_perp=N)
     w12, reb12 = start_at(w12, reb12, every_day=True)
     rate12 = np.where(np.arange(len(wide.symbols)) >= N, SPOT_RATE, costs.per_fill_rate())
@@ -258,6 +282,7 @@ def main():
                "run_utc": dt.datetime.now(dt.UTC).isoformat(timespec="seconds"), "git": git_state(),
                "funding_reconstructed_symbols": len(recon_info),
                "funding_unknown_events": int(sum(v["unknown_events"] for v in recon_info.values())),
+               "archive_gap_days_filled": gaps,
                "strategies": {}}
     for name, (pan, res, w, role) in results.items():
         days = [dt.datetime.fromtimestamp(d / 1000, dt.UTC).date().isoformat() for d in res.days]
