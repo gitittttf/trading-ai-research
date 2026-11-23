@@ -1,1 +1,2 @@
 {"run_utc": "2026-10-05T20:50:22+00:00", "data_until": "2026-10-04", "total_return": {"v12_harvest": 0.0, "v9_carry": -0.00018233019971825026, "v14_momentum": 0.0048336864237290555}, "funding_reconstructed_symbols": 114}
+{"run_utc": "2026-11-23T22:44:19+00:00", "data_until": "2026-11-22", "commit": "1d78e4c3b93e5f078a3b8e3b2809c77d52725653", "total_return": {"v12_harvest": 0.0, "v9_carry": 0.020877519354167706, "v14_momentum": -0.028731508251316096}, "funding_reconstructed_symbols": 138}
